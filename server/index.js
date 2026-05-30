@@ -109,3 +109,122 @@ if (sellerCount.count === 0) {
   });
   tx();
 }
+/* ===== Auth Middleware ===== */
+function authMiddleware(req, res, next) {
+  const header = req.headers.authorization;
+  if (!header || !header.startsWith('Bearer ')) {
+    return res.status(401).json({ ok: false, msg: 'No token provided' });
+  }
+  try {
+    const decoded = jwt.verify(header.split(' ')[1], JWT_SECRET);
+    req.user = decoded;
+    next();
+  } catch (e) {
+    return res.status(401).json({ ok: false, msg: 'Invalid token' });
+  }
+}
+
+/* ===== API Routes ===== */
+
+// ---- Auth ----
+app.post('/api/auth/signup', (req, res) => {
+  const { name, email, password } = req.body;
+  if (!name || !email || !password) return res.status(400).json({ ok: false, msg: 'All fields required' });
+  const existing = db.prepare('SELECT id FROM users WHERE email = ?').get(email);
+  if (existing) return res.status(409).json({ ok: false, msg: 'Email already registered' });
+  const id = uuidv4().slice(0, 8);
+  const hash = bcrypt.hashSync(password, 10);
+  db.prepare('INSERT INTO users (id, name, email, password) VALUES (?, ?, ?, ?)').run(id, name, email, hash);
+  const token = jwt.sign({ id, email, name }, JWT_SECRET, { expiresIn: '7d' });
+  res.json({ ok: true, token, user: { id, name, email } });
+});
+
+app.post('/api/auth/login', (req, res) => {
+  const { email, password } = req.body;
+  if (!email || !password) return res.status(400).json({ ok: false, msg: 'All fields required' });
+  const user = db.prepare('SELECT * FROM users WHERE email = ?').get(email);
+  if (!user || !bcrypt.compareSync(password, user.password)) {
+    return res.status(401).json({ ok: false, msg: 'Invalid credentials' });
+  }
+  const token = jwt.sign({ id: user.id, email: user.email, name: user.name }, JWT_SECRET, { expiresIn: '7d' });
+  res.json({ ok: true, token, user: { id: user.id, name: user.name, email: user.email } });
+});
+
+app.get('/api/auth/me', authMiddleware, (req, res) => {
+  const user = db.prepare('SELECT id, name, email, card_brand, card_last4, card_exp, created_at FROM users WHERE id = ?').get(req.user.id);
+  if (!user) return res.status(404).json({ ok: false, msg: 'User not found' });
+  res.json({ ok: true, user });
+});
+
+// ---- Services ----
+app.get('/api/services', (req, res) => {
+  const services = db.prepare('SELECT * FROM services ORDER BY title').all();
+  res.json({ ok: true, services });
+});
+
+// ---- Sellers ----
+app.get('/api/sellers', (req, res) => {
+  const sellers = db.prepare('SELECT * FROM sellers ORDER BY rating DESC').all();
+  res.json({ ok: true, sellers });
+});
+
+app.get('/api/sellers/:id', (req, res) => {
+  const seller = db.prepare('SELECT * FROM sellers WHERE id = ?').get(req.params.id);
+  if (!seller) return res.status(404).json({ ok: false, msg: 'Seller not found' });
+  res.json({ ok: true, seller });
+});
+
+// ---- Orders (protected) ----
+app.get('/api/orders', authMiddleware, (req, res) => {
+  const orders = db.prepare('SELECT * FROM orders WHERE user_id = ? ORDER BY created_at DESC').all(req.user.id);
+  res.json({ ok: true, orders });
+});
+
+app.post('/api/orders', authMiddleware, (req, res) => {
+  const { serviceId, details } = req.body;
+  if (!serviceId || !details) return res.status(400).json({ ok: false, msg: 'Service and details required' });
+  const service = db.prepare('SELECT * FROM services WHERE id = ?').get(serviceId);
+  if (!service) return res.status(404).json({ ok: false, msg: 'Service not found' });
+  const user = db.prepare('SELECT * FROM users WHERE id = ?').get(req.user.id);
+  if (!user.card_last4) return res.status(400).json({ ok: false, msg: 'Please add a payment method first' });
+
+  const id = 'ORD-' + uuidv4().slice(0, 8).toUpperCase();
+  db.prepare('INSERT INTO orders (id, user_id, service_id, service_title, service_icon, price, details, status) VALUES (?, ?, ?, ?, ?, ?, ?, ?)')
+    .run(id, req.user.id, serviceId, service.title, service.icon, service.price, details, 'pending');
+  res.json({ ok: true, order: { id, serviceTitle: service.title, serviceIcon: service.icon, price: service.price, details, status: 'pending' } });
+});
+
+app.patch('/api/orders/:id/cancel', authMiddleware, (req, res) => {
+  const order = db.prepare('SELECT * FROM orders WHERE id = ? AND user_id = ?').get(req.params.id, req.user.id);
+  if (!order) return res.status(404).json({ ok: false, msg: 'Order not found' });
+  db.prepare('UPDATE orders SET status = ? WHERE id = ?').run('cancelled', req.params.id);
+  res.json({ ok: true });
+});
+
+// ---- User profile / card ----
+app.put('/api/user/profile', authMiddleware, (req, res) => {
+  const { name } = req.body;
+  if (!name) return res.status(400).json({ ok: false, msg: 'Name is required' });
+  db.prepare('UPDATE users SET name = ? WHERE id = ?').run(name, req.user.id);
+  res.json({ ok: true, user: { id: req.user.id, name } });
+});
+
+app.put('/api/user/card', authMiddleware, (req, res) => {
+  const { brand, last4, exp } = req.body;
+  if (!brand || !last4 || !exp) return res.status(400).json({ ok: false, msg: 'Card info required' });
+  db.prepare('UPDATE users SET card_brand = ?, card_last4 = ?, card_exp = ? WHERE id = ?').run(brand, last4, exp, req.user.id);
+  res.json({ ok: true, card: { brand, last4, exp } });
+});
+
+// ---- Static catch-all: serve index.html for SPA routes ----
+app.get('*', (req, res) => {
+  res.sendFile(path.join(__dirname, '..', 'index.html'));
+});
+
+/* ===== Start Server ===== */
+app.listen(PORT, () => {
+  console.log(`⚡ SERVICECRAFT API running on http://localhost:${PORT}`);
+  console.log(`📦 Frontend served at http://localhost:${PORT}`);
+  console.log(`🔌 Ready for InsForge integration — swap db adapter in server/index.js`);
+});
+
