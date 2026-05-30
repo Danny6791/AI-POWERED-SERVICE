@@ -6,9 +6,9 @@
   // === 1. Hero chat bubbles ===
   const chatBody = document.getElementById("chatBody");
   const chatMessages = [
-    { type: "bot", text: "👋 Hi! I'm Nexus. How can I help you today?" },
-    { type: "user", text: "Can you summarize our Q3 sales?" },
-    { type: "bot", text: "Sure! Q3 revenue grew 34% YoY to $2.4M. Top product: Pro plan (+62%). Want a full report?" },
+    { type: "bot", text: "👋 Welcome to ServiceCraft! What service are you looking for?" },
+    { type: "user", text: "I need a modern website for my startup." },
+    { type: "bot", text: "Awesome! 🌐 Our Web Development package starts at $299. We'll match you with a top-rated seller. Want to see examples?" },
   ];
 
   function showChatSequence() {
