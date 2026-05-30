@@ -1,107 +1,68 @@
-/* ===== SERVICECRAFT — Shared Utilities ===== */
-
-(function () {
+/* SERVICECRAFT Shared Utilities */
+(function() {
   "use strict";
 
-  /* ---- Mobile nav toggle ---- */
-  var toggle = document.getElementById("navToggle");
-  var links = document.getElementById("navLinks");
-
+  // Mobile nav toggle
+  const toggle = document.getElementById("navToggle");
+  const links = document.getElementById("navLinks");
   if (toggle && links) {
-    toggle.addEventListener("click", function () {
-      var open = links.classList.toggle("open");
+    toggle.addEventListener("click", () => {
+      const open = links.classList.toggle("open");
       toggle.classList.toggle("open");
       toggle.setAttribute("aria-expanded", open);
     });
-    links.querySelectorAll("a").forEach(function (a) {
-      a.addEventListener("click", function () {
-        links.classList.remove("open");
-        toggle.classList.remove("open");
-        toggle.setAttribute("aria-expanded", "false");
-      });
-    });
+    links.querySelectorAll("a").forEach(a => a.addEventListener("click", () => {
+      links.classList.remove("open"); toggle.classList.remove("open");
+    }));
   }
 
-  /* ---- Scroll reveal ---- */
-  var revealEls = document.querySelectorAll(".reveal");
+  // Scroll reveal
   if ("IntersectionObserver" in window) {
-    var observer = new IntersectionObserver(function (entries) {
-      entries.forEach(function (entry) {
-        if (entry.isIntersecting) {
-          entry.target.classList.add("in");
-          observer.unobserve(entry.target);
-        }
-      });
+    const obs = new IntersectionObserver(entries => {
+      entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add("in"); obs.unobserve(e.target); } });
     }, { threshold: 0.15 });
-    revealEls.forEach(function (el) { observer.observe(el); });
+    document.querySelectorAll(".reveal").forEach(el => obs.observe(el));
   } else {
-    revealEls.forEach(function (el) { el.classList.add("in"); });
+    document.querySelectorAll(".reveal").forEach(el => el.classList.add("in"));
   }
 
-  /* ---- Smooth scroll for anchor links ---- */
-  document.querySelectorAll('a[href^="#"]').forEach(function (anchor) {
-    anchor.addEventListener("click", function (e) {
-      var href = this.getAttribute("href");
-      if (href === "#" || href === "" || href.length < 2) return;
-      var target = document.querySelector(href);
-      if (target) {
-        e.preventDefault();
-        var top = target.getBoundingClientRect().top + window.scrollY - 80;
-        window.scrollTo({ top: top, behavior: "smooth" });
-      }
+  // Smooth scroll
+  document.querySelectorAll('a[href^="#"]').forEach(a => {
+    a.addEventListener("click", function(e) {
+      const h = this.getAttribute("href");
+      if (h.length < 2) return;
+      const t = document.querySelector(h);
+      if (t) { e.preventDefault(); window.scrollTo({ top: t.getBoundingClientRect().top + window.scrollY - 80, behavior: "smooth" }); }
     });
   });
 
-  /* ---- Toast notifications ---- */
-  window.showToast = function (msg, type) {
-    type = type || "info";
-    var c = document.getElementById("toastContainer");
-    if (!c) {
-      c = document.createElement("div");
-      c.id = "toastContainer";
-      c.className = "toast-container";
-      document.body.appendChild(c);
-    }
-    var t = document.createElement("div");
-    t.className = "toast toast--" + type;
-    var iconName = type === "success" ? "ic-check" : type === "error" ? "ic-x" : "ic-bell";
-    t.innerHTML = '<svg class="icon" style="flex-shrink:0"><use href="public/icons/icons.svg#' + iconName + '"/></svg> ' + msg;
+  // Year
+  const ys = document.getElementById("year");
+  if (ys) ys.textContent = new Date().getFullYear();
+
+  // Toast helper
+  window.showToast = function(msg, type) {
+    let c = document.getElementById("toastContainer");
+    if (!c) { c = document.createElement("div"); c.className = "toast-container"; c.id = "toastContainer"; document.body.appendChild(c); }
+    const t = document.createElement("div");
+    t.className = "toast toast--" + (type || "info");
+    t.innerHTML = '<svg class="icon" style="flex-shrink:0"><use href="public/icons/icons.svg#ic-' + (type === "success" ? "check" : type === "error" ? "x" : "bell") + '"/></svg> ' + msg;
     c.appendChild(t);
-    setTimeout(function () {
-      t.classList.add("removing");
-      setTimeout(function () { t.remove(); }, 300);
-    }, 3500);
+    setTimeout(() => t.remove(), 4000);
   };
 
-  /* ---- SCUtils ---- */
+  // Formatters
   window.SCUtils = {
-    formatDate: function (d) {
-      if (!d) return "—";
-      var dt = new Date(d);
-      return dt.toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" });
+    formatDate(d) { return new Date(d).toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" }); },
+    statusBadge(s) {
+      const m = { pending: ["Pending","badge--pending"], "in-progress": ["In Progress","badge--progress"], completed: ["Completed","badge--done"], cancelled: ["Cancelled","badge--cancel"] };
+      const [l, c] = m[s] || [s, ""];
+      return '<span class="badge ' + c + '">' + l + '</span>';
     },
-    formatTime: function (d) {
-      if (!d) return "";
-      var dt = new Date(d);
-      return dt.toLocaleTimeString("en-US", { hour: "2-digit", minute: "2-digit" });
-    },
-    statusBadge: function (status) {
-      var map = {
-        "pending": "badge--pending",
-        "in-progress": "badge--progress",
-        "completed": "badge--done",
-        "cancelled": "badge--cancel",
-        "accepted": "badge--done",
-        "declined": "badge--cancel"
-      };
-      var cls = map[status] || "badge--pending";
-      var label = status ? status.charAt(0).toUpperCase() + status.slice(1).replace("-", " ") : "Pending";
-      return '<span class="badge ' + cls + '">' + label + '</span>';
+    stars(r) {
+      let s = "";
+      for (let i = 1; i <= 5; i++) s += '<svg class="icon icon--sm" style="color:' + (i <= r ? '#ffc107' : 'var(--muted)') + '"><use href="public/icons/icons.svg#ic-star-filled"/></svg>';
+      return s;
     }
   };
-
-  /* ---- Dynamic copyright year ---- */
-  var yearSpan = document.getElementById("year");
-  if (yearSpan) yearSpan.textContent = new Date().getFullYear();
-
 })();

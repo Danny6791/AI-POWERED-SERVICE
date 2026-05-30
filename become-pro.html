@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" /><meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>SERVICECRAFT - Become a Professional</title>
+  <meta name="description" content="Apply to become a professional on SERVICECRAFT." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="css/styles.css" />
+  <link rel="stylesheet" href="css/components.css" />
+  <link rel="stylesheet" href="public/css/icons.css" />
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>&#9889;</text></svg>" />
+</head>
+<body>
+  <div class="bg-decor" aria-hidden="true"><span class="blob blob--1"></span><span class="blob blob--2"></span><span class="blob blob--3"></span></div>
+  <header class="nav"><div class="container nav__inner">
+    <a href="index.html" class="brand"><svg class="icon icon--md" style="color:var(--brand-2)"><use href="public/icons/icons.svg#ic-flash"/></svg><span class="brand__name">Service<span class="brand__accent">Craft</span></span></a>
+    <nav class="nav__links" id="navLinks" aria-label="Primary">
+      <a href="index.html">Home</a><a href="professionals.html">Pros</a>
+    </nav>
+    <button class="nav__toggle" id="navToggle" aria-label="Toggle navigation"><span></span><span></span><span></span></button>
+  </div></header>
+  <main class="auth-page">
+    <div class="glass-card auth-box" style="max-width:520px">
+      <h1>Become a Pro &#10024;</h1>
+      <p>Apply to join our network of professionals</p>
+      <!-- Step indicators -->
+      <div id="stepIndicators" style="display:flex;gap:8px;margin-bottom:24px"></div>
+      <!-- Step 1: Personal Info -->
+      <div id="step1" class="form-step">
+        <div class="form-group"><label>Full Name</label><input type="text" id="bfName" placeholder="Your full name" /></div>
+        <div class="form-group"><label>Professional Title</label><input type="text" id="bfTitle" placeholder="e.g. Full-Stack Developer" /></div>
+        <div class="form-group"><label>Years of Experience</label><input type="number" id="bfExp" placeholder="e.g. 5" min="0" /></div>
+      </div>
+      <!-- Step 2: Details -->
+      <div id="step2" class="form-step" style="display:none">
+        <div class="form-group"><label>Bio</label><textarea id="bfBio" placeholder="Tell clients about yourself..." rows="4"></textarea></div>
+        <div class="form-group"><label>Portfolio URL</label><input type="url" id="bfPortfolio" placeholder="https://yoursite.com" /></div>
+        <div class="form-group"><label>Hourly Rate (USD)</label><input type="number" id="bfRate" placeholder="e.g. 50" min="1" /></div>
+      </div>
+      <!-- Step 3: Skills -->
+      <div id="step3" class="form-step" style="display:none">
+        <div class="form-group"><label>Select Your Skills</label>
+          <div id="skillPicker" style="display:flex;flex-wrap:wrap;gap:8px;margin-top:8px"></div>
+        </div>
+        <p style="color:var(--muted);font-size:.85rem">Select at least one skill from the options above.</p>
+      </div>
+      <!-- Step 4: Review -->
+      <div id="step4" class="form-step" style="display:none">
+        <h3 style="margin-bottom:16px">Review Your Application</h3>
+        <div id="reviewSummary" style="background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:16px;font-size:.9rem"></div>
+      </div>
+      <div style="display:flex;gap:12px;margin-top:20px">
+        <button class="btn btn--ghost" id="prevBtn" style="display:none;flex:1">Back</button>
+        <button class="btn btn--primary" id="nextBtn" style="flex:2">Next Step</button>
+      </div>
+      <div id="applyMsg" class="form-msg"></div>
+      <div class="auth-foot" style="margin-top:12px"><a href="professionals.html" style="color:var(--brand-2)">Browse existing professionals</a></div>
+    </div>
+  </main>
+  <footer class="footer"><div class="container footer__inner">
+    <div class="brand"><svg class="icon icon--md" style="color:var(--brand-2)"><use href="public/icons/icons.svg#ic-flash"/></svg><span class="brand__name">Service<span class="brand__accent">Craft</span></span></div>
+    <p>&copy; <span id="year"></span> SERVICECRAFT. A demo marketplace.</p>
+    <div class="footer__links"><a href="index.html#services">Services</a><a href="index.html#how">How it works</a></div>
+  </div></footer>
+  <div class="toast-container" id="toastContainer"></div>
+  <script src="js/sc.js"></script>
+  <script src="js/app.js"></script>
+  <script>
+  (function(){
+    "use strict";
+    var step=1,selectedSkills=[];
+    var allSkills=['web','software','app','design','video','seo'];
+    var skillLabels={web:'Web Dev',software:'Software',app:'App Dev',design:'Design',video:'Video',seo:'SEO'};
+    function updateIndicators(){
+      var h='';for(var i=1;i<=4;i++)h+='<div style="flex:1;height:4px;border-radius:2px;background:'+(i<=step?'var(--brand)':'var(--border)')+';transition:background .3s"></div>';
+      document.getElementById('stepIndicators').innerHTML=h;
+    }
+    function showStep(n){step=n;for(var i=1;i<=4;i++)document.getElementById('step'+i).style.display=i===n?'block':'none';
+      document.getElementById('prevBtn').style.display=n>1?'flex':'none';
+      document.getElementById('nextBtn').textContent=n===4?'Submit Application':'Next Step';
+      updateIndicators();}
+    function buildReview(){
+      return '<div style="margin-bottom:10px"><strong>Name:</strong> '+(document.getElementById('bfName').value||'N/A')+'</div>'+
+        '<div style="margin-bottom:10px"><strong>Title:</strong> '+(document.getElementById('bfTitle').value||'N/A')+'</div>'+
+        '<div style="margin-bottom:10px"><strong>Experience:</strong> '+(document.getElementById('bfExp').value||'0')+' years</div>'+
+        '<div style="margin-bottom:10px"><strong>Bio:</strong> '+(document.getElementById('bfBio').value||'N/A')+'</div>'+
+        '<div style="margin-bottom:10px"><strong>Rate:</strong> $'+(document.getElementById('bfRate').value||'0')+'/hr</div>'+
+        '<div><strong>Skills:</strong> '+(selectedSkills.join(', ')||'None')+'</div>';
+    }
+    var picker=document.getElementById('skillPicker');
+    allSkills.forEach(function(s){
+      var btn=document.createElement('button');btn.type='button';btn.className='service-opt';btn.style.flex='0 0 auto';btn.style.minWidth='100px';btn.textContent=skillLabels[s];btn.dataset.skill=s;
+      btn.addEventListener('click',function(){
+        if(selectedSkills.includes(s)){selectedSkills=selectedSkills.filter(function(x){return x!==s});btn.classList.remove('selected');}
+        else{selectedSkills.push(s);btn.classList.add('selected');}
+      });
+      picker.appendChild(btn);
+    });
+    document.getElementById('nextBtn').addEventListener('click',async function(){
+      var msg=document.getElementById('applyMsg');
+      if(step===1){
+        if(!document.getElementById('bfName').value.trim()){msg.textContent='Name is required';msg.className='form-msg error';return;}
+        msg.className='form-msg';showStep(2);return;
+      }
+      if(step===2){msg.className='form-msg';showStep(3);return;}
+      if(step===3){
+        if(!selectedSkills.length){msg.textContent='Select at least one skill';msg.className='form-msg error';return;}
+        msg.className='form-msg';document.getElementById('reviewSummary').innerHTML=buildReview();showStep(4);return;
+      }
+      if(step===4){
+        this.disabled=true;this.textContent='Submitting...';msg.className='form-msg';
+        var fd={full_name:document.getElementById('bfName').value.trim(),professional_title:document.getElementById('bfTitle').value.trim(),years_experience:parseInt(document.getElementById('bfExp').value)||0,bio:document.getElementById('bfBio').value.trim(),portfolio_url:document.getElementById('bfPortfolio').value.trim(),hourly_rate:parseFloat(document.getElementById('bfRate').value)||0,skills:selectedSkills};
+        try{var r=await SC.applyAsPro(fd);if(r.ok){msg.className='form-msg success';msg.textContent='Application submitted! Pending approval.';showStep(0);document.getElementById('nextBtn').style.display='none';document.getElementById('prevBtn').style.display='none';}
+        else{msg.textContent=r.msg||'Failed';msg.className='form-msg error';}}catch(e){msg.textContent='Network error';msg.className='form-msg error';}
+        this.disabled=false;this.textContent='Submit Application';
+      }
+    });
+    document.getElementById('prevBtn').addEventListener('click',function(){if(step>1)showStep(step-1);});
+    showStep(1);
+  })();
+  </script>
+</body>
+</html>

@@ -2,87 +2,99 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" /><meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>SERVICECRAFT - Hire Professionals</title>
-  <meta name="description" content="Browse and hire top professionals on SERVICECRAFT." />
+  <title>SERVICECRAFT — Hire Professionals</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="css/styles.css" />
-  <link rel="stylesheet" href="css/components.css" />
+  <link rel="stylesheet" href="css/styles.css" /><link rel="stylesheet" href="css/components.css" />
   <link rel="stylesheet" href="public/css/icons.css" />
-  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>&#9889;</text></svg>" />
 </head>
 <body>
   <div class="bg-decor" aria-hidden="true"><span class="blob blob--1"></span><span class="blob blob--2"></span><span class="blob blob--3"></span></div>
-  <header class="nav"><div class="container nav__inner">
-    <a href="index.html" class="brand"><svg class="icon icon--md" style="color:var(--brand-2)"><use href="public/icons/icons.svg#ic-flash"/></svg><span class="brand__name">Service<span class="brand__accent">Craft</span></span></a>
-    <nav class="nav__links" id="navLinks" aria-label="Primary">
-      <a href="index.html">Home</a><a href="index.html#services">Services</a>
-      <a href="become-pro.html" class="btn btn--ghost">Become a Pro</a>
-    </nav>
-    <button class="nav__toggle" id="navToggle" aria-label="Toggle navigation"><span></span><span></span><span></span></button>
-  </div></header>
+  <header class="nav">
+    <div class="container nav__inner">
+      <a href="index.html" class="brand"><svg class="icon icon--md" style="color:var(--brand-2)"><use href="public/icons/icons.svg#ic-flash"/></svg><span class="brand__name">Service<span class="brand__accent">Craft</span></span></a>
+      <nav class="nav__links" id="navLinks">
+        <a href="index.html#services">Services</a>
+        <a href="professionals.html">Hire Pros</a>
+        <a href="become-pro.html">Become a Pro</a>
+        <a href="dashboard.html" class="auth-show" style="display:none">Dashboard</a>
+        <a href="login.html" class="auth-hide btn btn--ghost" style="display:inline-flex">Login</a>
+      </nav>
+      <button class="nav__toggle" id="navToggle" aria-label="Menu"><span></span><span></span><span></span></button>
+    </div>
+  </header>
   <main>
     <section class="page-hero"><div class="container">
       <h1><svg class="icon icon--brand2"><use href="public/icons/icons.svg#ic-users"/></svg> Hire Professionals</h1>
-      <p>Find top-rated experts ready to bring your project to life</p>
+      <p>Find and hire top-rated developers, designers, video editors & more.</p>
     </div></section>
-    <section style="padding:32px 0 60px"><div class="container">
-      <div class="glass-card" style="padding:18px 20px;margin-bottom:28px;display:flex;gap:12px;flex-wrap:wrap;align-items:center">
-        <div class="form-group" style="flex:1;min-width:200px;margin:0"><input type="text" id="proSearch" placeholder="Search by name or title..." /></div>
-        <div class="form-group" style="margin:0;min-width:160px">
-          <select id="proSkillFilter"><option value="">All Skills</option><option value="web">Web Dev</option><option value="software">Software</option><option value="app">App Dev</option><option value="design">Design</option><option value="video">Video</option><option value="seo">SEO</option></select>
+    <section class="section" style="padding-top:0">
+      <div class="container">
+        <div style="display:flex;gap:12px;margin-bottom:28px;flex-wrap:wrap;align-items:center">
+          <div style="flex:1;min-width:200px">
+            <input type="text" id="proSearch" placeholder="Search by name or skill..." style="width:100%;padding:11px 14px;border-radius:12px;border:1px solid var(--border);background:rgba(0,0,0,.3);color:var(--text);font-size:.95rem;min-height:44px" />
+          </div>
+          <select id="proFilter" style="padding:11px 14px;border-radius:12px;border:1px solid var(--border);background:var(--bg-soft);color:var(--text);font-size:.9rem;min-height:44px">
+            <option value="">All Skills</option>
+            <option value="React">React / Frontend</option>
+            <option value="Node.js">Node.js / Backend</option>
+            <option value="Python">Python / AI</option>
+            <option value="Design">Design / UI</option>
+            <option value="Video">Video / Motion</option>
+            <option value="SEO">SEO / Marketing</option>
+          </select>
         </div>
-        <button class="btn btn--primary" id="proSearchBtn"><svg class="icon icon--sm"><use href="public/icons/icons.svg#ic-search"/></svg> Search</button>
+        <div class="grid grid--3" id="proGrid"></div>
+        <div class="empty-state" id="emptyState" style="display:none">
+          <div class="empty-state__icon"><svg class="icon icon--xl icon--muted"><use href="public/icons/icons.svg#ic-users"/></svg></div>
+          <p>No professionals found matching your search.</p>
+          <a href="become-pro.html" class="btn btn--primary" style="margin-top:14px">Become a Pro Instead</a>
+        </div>
       </div>
-      <div id="proGrid" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:20px"></div>
-      <div id="proEmpty" class="empty-state" style="display:none"><div class="empty-state__icon"><svg class="icon icon--xl icon--muted"><use href="public/icons/icons.svg#ic-users"/></svg></div><p>No professionals found. <a href="become-pro.html" style="color:var(--brand-2)">Become the first Pro</a></p></div>
-      <div id="proLoading" class="empty-state"><p style="color:var(--brand-2)">Loading professionals...</p></div>
-      <div style="text-align:center;margin-top:40px;padding:28px;border:1px dashed var(--border);border-radius:var(--radius,18px)">
-        <h3 style="margin-bottom:8px">Are you a professional?</h3>
-        <p style="color:var(--muted);margin-bottom:16px;font-size:.9rem">Join our platform and get hired by clients worldwide.</p>
-        <a href="become-pro.html" class="btn btn--outline">Apply Now</a>
-      </div>
-    </div></section>
+    </section>
   </main>
   <footer class="footer"><div class="container footer__inner">
     <div class="brand"><svg class="icon icon--md" style="color:var(--brand-2)"><use href="public/icons/icons.svg#ic-flash"/></svg><span class="brand__name">Service<span class="brand__accent">Craft</span></span></div>
-    <p>&copy; <span id="year"></span> SERVICECRAFT. A demo marketplace.</p>
-    <div class="footer__links"><a href="index.html#services">Services</a><a href="index.html#how">How it works</a></div>
+    <p>&copy; <span id="year"></span> SERVICECRAFT.</p>
   </div></footer>
-  <div class="toast-container" id="toastContainer"></div>
-  <script src="js/sc.js"></script>
-  <script src="js/app.js"></script>
+  <script src="js/sc.js"></script><script src="js/app.js"></script>
   <script>
-  (function(){
-    "use strict";
-    var grid=document.getElementById('proGrid'),empty=document.getElementById('proEmpty'),loading=document.getElementById('proLoading');
-    var si=document.getElementById('proSearch'),sf=document.getElementById('proSkillFilter');
-    function mkStars(n){var s='';for(var i=0;i<5;i++)s+='<svg class="icon icon--sm" style="color:'+(i<Math.round(n)?'#ffc107':'var(--muted)')+';opacity:.8"><use href="public/icons/icons.svg#ic-star"/></svg>';return s;}
-    function renderPros(pros){
-      loading.style.display='none';
-      if(!pros.length){grid.innerHTML='';empty.style.display='block';return;}
-      empty.style.display='none';
-      grid.innerHTML=pros.map(function(p){
-        var sk=(p.skills||[]).map(function(s){return '<span class="badge badge--progress" style="font-size:.7rem">'+s+'</span>'}).join(' ');
-        return '<div class="glass-card" style="padding:24px;display:flex;flex-direction:column;gap:12px">'+
-          '<div style="display:flex;align-items:center;gap:12px"><div style="width:48px;height:48px;border-radius:50%;background:rgba(124,92,255,.15);display:flex;align-items:center;justify-content:center;flex-shrink:0"><svg class="icon icon--lg" style="color:var(--brand)"><use href="public/icons/icons.svg#ic-account"/></svg></div><div><h3 style="margin:0;font-size:1rem">'+(p.full_name||'Pro')+'</h3><p style="color:var(--muted);font-size:.82rem;margin:0">'+(p.professional_title||'Expert')+'</p></div></div>'+
-          '<div style="display:flex;align-items:center;gap:6px">'+mkStars(p.rating||0)+'<span style="color:var(--muted);font-size:.8rem">('+(p.rating||0)+')</span>'+(p.years_experience?'<span style="color:var(--muted);font-size:.8rem;margin-left:auto">'+p.years_experience+' yrs</span>':'')+'</div>'+
-          '<div style="display:flex;flex-wrap:wrap;gap:6px">'+sk+'</div>'+
-          '<p style="color:var(--muted);font-size:.88rem;flex:1;margin:0">'+(p.bio||'No bio available.')+'</p>'+
-          '<a href="hire.html?id='+p.user_id+'" class="btn btn--primary" style="margin-top:auto">Hire Now</a></div>';
-      }).join('');
-    }
-    async function loadPros(f){
-      loading.style.display='block';empty.style.display='none';grid.innerHTML='';
-      try{renderPros(await SC.getPros(f||{}));}catch(e){loading.style.display='none';empty.style.display='block';}
-    }
-    document.getElementById('proSearchBtn').addEventListener('click',function(){
-      var f={};if(si.value.trim())f.search=si.value.trim();if(sf.value)f.skill=sf.value;loadPros(f);
-    });
-    si.addEventListener('keydown',function(e){if(e.key==='Enter')document.getElementById('proSearchBtn').click()});
-    loadPros();
-  })();
+    (function() {
+      const grid = document.getElementById('proGrid');
+      const empty = document.getElementById('emptyState');
+      const search = document.getElementById('proSearch');
+      const filter = document.getElementById('proFilter');
+
+      async function loadPros() {
+        const filters = {};
+        if (search.value) filters.search = '%25' + search.value + '%25';
+        if (filter.value) filters.skill = filter.value;
+        const pros = await SC.getPros(filters);
+        if (!pros.length) { grid.innerHTML = ''; empty.style.display = ''; return; }
+        empty.style.display = 'none';
+        grid.innerHTML = pros.map(p => {
+          const skills = (p.skills || []).map(s => '<span class="badge badge--progress" style="margin:2px">' + s + '</span>').join('');
+          return '<article class="service-card">
+            <div style="display:flex;align-items:center;gap:12px;margin-bottom:12px">
+              <div style="width:48px;height:48px;border-radius:50%;background:linear-gradient(135deg,var(--brand),var(--accent));display:grid;place-items:center;font-weight:700;color:#fff;font-size:1.1rem">' + (p.full_name||'P').charAt(0) + '</div>
+              <div><h3 style="margin:0">' + (p.full_name||'') + '</h3><p style="margin:0;color:var(--muted);font-size:.82rem">' + (p.professional_title||'') + '</p></div>
+            </div>
+            <div style="margin-bottom:10px">' + SCUtils.stars(Math.round(p.rating||5)) + ' <span style="color:var(--muted);font-size:.8rem">(' + (p.rating||5).toFixed(1) + ')</span></div>
+            <p style="font-size:.85rem;color:var(--muted);margin-bottom:12px">' + (p.bio||'').substring(0,120) + (p.bio && p.bio.length > 120 ? '...' : '') + '</p>
+            <div style="margin-bottom:12px">' + skills + '</div>
+            <div class="service-card__foot">
+              <span class="service-card__price">$' + (p.hourly_rate||'?') + '<small>/hr</small></span>
+              <a href="hire.html?id=' + p.user_id + '" class="btn btn--primary" style="padding:8px 16px;font-size:.85rem"><svg class="icon icon--sm"><use href="public/icons/icons.svg#ic-card"/></svg> Hire</a>
+            </div>
+          </article>';
+        }).join('');
+      }
+
+      loadPros();
+      let timer;
+      search.addEventListener('input', () => { clearTimeout(timer); timer = setTimeout(loadPros, 300); });
+      filter.addEventListener('change', loadPros);
+    })();
   </script>
-</body>
-</html>
+</body></html>
