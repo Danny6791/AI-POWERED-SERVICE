@@ -3,18 +3,21 @@
 <head>
   <meta charset="UTF-8" /><meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>SERVICECRAFT — Order a Service</title>
-  <meta name="description" content="Order expert services on SERVICECRAFT. Pick a service, describe your project, and get it delivered." />
+  <meta name="description" content="Order expert services on SERVICECRAFT." />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="css/styles.css" /><link rel="stylesheet" href="css/components.css" />
-  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>⚡</text></svg>" />
+  <link rel="stylesheet" href="public/css/icons.css" />
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>⚡</text></svg>" />
 </head>
 <body>
   <div class="bg-decor" aria-hidden="true"><span class="blob blob--1"></span><span class="blob blob--2"></span><span class="blob blob--3"></span></div>
   <header class="nav">
     <div class="container nav__inner">
-      <a href="index.html" class="brand"><span class="brand__logo">⚡</span><span class="brand__name">Service<span class="brand__accent">Craft</span></span></a>
+      <a href="index.html" class="brand">
+        <svg class="icon icon--md" style="color:var(--brand-2)"><use href="public/icons/icons.svg#ic-flash"/></svg>
+        <span class="brand__name">Service<span class="brand__accent">Craft</span></span></a>
       <nav class="nav__links" id="navLinks" aria-label="Primary">
         <a href="index.html#services">Services</a>
         <a href="dashboard.html" class="auth-show btn btn--ghost" style="display:none">Dashboard</a>
@@ -24,35 +27,33 @@
     </div>
   </header>
   <main>
-    <section class="page-hero"><div class="container"><h1>Order a Service 🚀</h1><p>Pick a service, describe what you need, and we'll match you with an expert seller.</p></div></section>
+    <section class="page-hero"><div class="container"><h1><svg class="icon icon--brand2"><use href="public/icons/icons.svg#ic-card"/></svg> Order a Service</h1><p>Pick a service, describe what you need, and we'll match you with an expert seller.</p></div></section>
     <section class="section" style="padding-top:0">
       <div class="container">
         <form id="orderForm" class="order-layout">
-          <!-- LEFT: Service picker + details -->
           <div>
             <div class="glass-card" style="padding:28px">
               <h3 style="margin-bottom:16px">1. Choose a Service</h3>
               <div class="service-picker" id="servicePicker"></div>
               <div style="margin-top:22px">
                 <h3 style="margin-bottom:12px">2. Describe Your Project</h3>
-                <div class="form-group"><textarea id="orderDetails" rows="4" placeholder="Tell us what you want to build. Be as detailed as possible — describe the features, design preferences, deadline, and any specific requirements..."></textarea></div>
+                <div class="form-group"><textarea id="orderDetails" rows="4" placeholder="Tell us what you want to build. Be as detailed as possible..."></textarea></div>
               </div>
-              <button type="submit" class="btn btn--primary" style="margin-top:8px" id="placeOrderBtn">Place Order →</button>
+              <button type="submit" class="btn btn--primary" style="margin-top:8px" id="placeOrderBtn"><svg class="icon icon--sm"><use href="public/icons/icons.svg#ic-check"/></svg> Place Order</button>
               <div id="orderMsg" class="form-msg"></div>
             </div>
           </div>
-          <!-- RIGHT: Summary -->
           <div>
             <div class="summary-box" id="orderSummary">
-              <h3>📋 Order Summary</h3>
+              <h3><svg class="icon"><use href="public/icons/icons.svg#ic-orders"/></svg> Order Summary</h3>
               <div class="summary-row"><span>Service</span><span id="summaryService">Not selected</span></div>
               <div class="summary-row"><span>Price</span><span id="summaryPrice">—</span></div>
               <div class="summary-row total"><span>Total</span><span id="summaryTotal">—</span></div>
             </div>
             <div class="glass-card" style="padding:22px;margin-top:16px">
-              <h3 style="margin-bottom:12px">💳 Payment</h3>
-              <p style="color:var(--muted);font-size:.9rem;margin-bottom:14px">You need to add a card before placing an order. Manage your payment methods in the dashboard.</p>
-              <a href="dashboard.html" class="btn btn--outline w-full">Manage Payment Methods</a>
+              <h3 style="margin-bottom:12px"><svg class="icon"><use href="public/icons/icons.svg#ic-card"/></svg> Payment</h3>
+              <p style="color:var(--muted);font-size:.9rem;margin-bottom:14px">Add a card in your dashboard before placing an order.</p>
+              <a href="dashboard.html" class="btn btn--outline w-full"><svg class="icon icon--sm"><use href="public/icons/icons.svg#ic-settings"/></svg> Manage Payment</a>
             </div>
           </div>
         </form>
@@ -61,92 +62,84 @@
   </main>
   <footer class="footer">
     <div class="container footer__inner">
-      <div class="brand"><span class="brand__logo">⚡</span><span class="brand__name">Service<span class="brand__accent">Craft</span></span></div>
-      <p>© <span id="year"></span> SERVICECRAFT. A demo marketplace.</p>
+      <div class="brand">
+        <svg class="icon icon--md" style="color:var(--brand-2)"><use href="public/icons/icons.svg#ic-flash"/></svg>
+        <span class="brand__name">Service<span class="brand__accent">Craft</span></span>
+      </div>
+      <p>&copy; <span id="year"></span> SERVICECRAFT. A demo marketplace.</p>
       <div class="footer__links"><a href="index.html#services">Services</a><a href="index.html#how">How it works</a></div>
     </div>
   </footer>
   <div class="toast-container" id="toastContainer"></div>
-  <script src="js/db.js"></script><script src="js/auth.js"></script><script src="js/app.js"></script>
+  <script src="public/js/icon-helper.js"></script>
+  <script src="js/db.js"></script>
+  <script src="js/auth.js"></script>
+  <script src="js/app.js"></script>
+  <script>
     (function() {
       "use strict";
-
       const picker = document.getElementById('servicePicker');
       let selectedService = null;
 
-      // Render service options
       SC.services.forEach(s => {
         const btn = document.createElement('button');
         btn.type = 'button';
         btn.className = 'service-opt';
         btn.dataset.id = s.id;
-        btn.innerHTML = '<div class="service-opt__icon">' + s.icon + '</div><div class="service-opt__title">' + s.title + '</div><div class="service-opt__price">$' + s.price + '</div>';
+        btn.innerHTML = '<div class="service-opt__icon"><svg class="icon icon--lg icon--brand2"><use href="public/icons/icons.svg#ic-' + s.id + '"/></svg></div><div class="service-opt__title">' + s.title + '</div><div class="service-opt__price">$' + s.price + '</div>';
         btn.addEventListener('click', function() {
           document.querySelectorAll('.service-opt').forEach(x => x.classList.remove('selected'));
           this.classList.add('selected');
           selectedService = s;
-          document.getElementById('summaryService').textContent = s.icon + ' ' + s.title;
+          document.getElementById('summaryService').textContent = s.title;
           document.getElementById('summaryPrice').textContent = '$' + s.price;
           document.getElementById('summaryTotal').textContent = '$' + s.price;
         });
         picker.appendChild(btn);
       });
 
-      // Pre-select service from URL param
       const params = new URLSearchParams(window.location.search);
-      const preselected = params.get('service');
-      if (preselected) {
-        const found = SC.services.find(s => s.id === preselected);
+      const presel = params.get('service');
+      if (presel) {
+        const found = SC.services.find(s => s.id === presel);
         if (found) {
           document.querySelectorAll('.service-opt').forEach(x => {
-            if (x.dataset.id === found.id) {
-              x.classList.add('selected');
-              selectedService = found;
-              document.getElementById('summaryService').textContent = found.icon + ' ' + found.title;
-              document.getElementById('summaryPrice').textContent = '$' + found.price;
-              document.getElementById('summaryTotal').textContent = '$' + found.price;
-            }
+            if (x.dataset.id === found.id) x.click();
           });
         }
       }
 
-      // Form submission
       document.getElementById('orderForm').addEventListener('submit', function(e) {
         e.preventDefault();
         const msgEl = document.getElementById('orderMsg');
-
         if (!SC.isLoggedIn()) {
-          msgEl.textContent = 'Please login first to place an order.';
+          msgEl.innerHTML = '<svg class="icon icon--sm icon--error"><use href="public/icons/icons.svg#ic-x"/></svg> Please login first.';
           msgEl.className = 'form-msg error';
-          setTimeout(() => { window.location.href = 'login.html?redirect=order.html'; }, 800);
+          setTimeout(() => window.location.href = 'login.html?redirect=order.html', 800);
           return;
         }
-
         if (!selectedService) {
-          msgEl.textContent = 'Please select a service.';
+          msgEl.innerHTML = '<svg class="icon icon--sm icon--error"><use href="public/icons/icons.svg#ic-x"/></svg> Please select a service.';
           msgEl.className = 'form-msg error'; return;
         }
-
         const details = document.getElementById('orderDetails').value.trim();
         if (!details || details.length < 20) {
-          msgEl.textContent = 'Please describe your project in detail (at least 20 characters).';
+          msgEl.innerHTML = '<svg class="icon icon--sm icon--error"><use href="public/icons/icons.svg#ic-x"/></svg> Describe your project (20+ chars).';
           msgEl.className = 'form-msg error'; return;
         }
-
         if (!SC.hasCard()) {
-          msgEl.textContent = 'Please add a payment method first. Redirecting to dashboard...';
+          msgEl.innerHTML = '<svg class="icon icon--sm"><use href="public/icons/icons.svg#ic-card"/></svg> Add a payment method first.';
           msgEl.className = 'form-msg info';
-          setTimeout(() => { window.location.href = 'dashboard.html#account'; }, 1000);
+          setTimeout(() => window.location.href = 'dashboard.html', 1000);
           return;
         }
-
         const result = SC.createOrder(selectedService.id, details);
         if (result.ok) {
-          msgEl.textContent = 'Order placed successfully! Order ID: ' + result.order.id;
+          msgEl.innerHTML = '<svg class="icon icon--sm icon--success"><use href="public/icons/icons.svg#ic-check"/></svg> Ordered! ID: ' + result.order.id;
           msgEl.className = 'form-msg success';
           document.getElementById('placeOrderBtn').disabled = true;
-          document.getElementById('placeOrderBtn').textContent = '✅ Ordered!';
-          setTimeout(() => { window.location.href = 'dashboard.html'; }, 1500);
+          document.getElementById('placeOrderBtn').innerHTML = '<svg class="icon icon--sm"><use href="public/icons/icons.svg#ic-check"/></svg> Ordered!';
+          setTimeout(() => window.location.href = 'dashboard.html', 1500);
         } else {
           msgEl.textContent = result.msg;
           msgEl.className = 'form-msg error';
@@ -156,5 +149,3 @@
   </script>
 </body>
 </html>
-
-  <script>
