@@ -210,3 +210,35 @@
 .service-card__price { font-family: "Space Grotesk"; font-size: 1.3rem; font-weight: 700; color: var(--brand-2); }
 .service-card__price small { font-size: .75rem; color: var(--muted); font-weight: 400; }
 
+/* --- Toggle Switch --- */
+.toggle { position: relative; display: inline-block; width: 44px; height: 24px; cursor: pointer; }
+.toggle input { opacity: 0; width: 0; height: 0; }
+.toggle__slider {
+  position: absolute; inset: 0; background: rgba(255,255,255,.12); border-radius: 24px; transition: .3s;
+}
+.toggle__slider::before {
+  content: ''; position: absolute; left: 3px; bottom: 3px; width: 18px; height: 18px;
+  background: #fff; border-radius: 50%; transition: .3s;
+}
+.toggle input:checked + .toggle__slider { background: linear-gradient(135deg, var(--brand), var(--brand-2)); }
+.toggle input:checked + .toggle__slider::before { transform: translateX(20px); }
+
+/* --- Dashboard responsive enhancements --- */
+@media (max-width: 768px) {
+  .dash__main { padding: 16px; }
+  .stats { grid-template-columns: 1fr 1fr; gap: 10px; }
+  .stat { padding: 14px 16px; }
+  .stat__num { font-size: 1.4rem; }
+  .orders-card { font-size: .85rem; }
+  .order-row { grid-template-columns: 1fr auto auto; gap: 8px; padding: 10px 14px; }
+  .order-row__title small { max-width: 120px; }
+  .order-layout { grid-template-columns: 1fr; }
+  .form-row { grid-template-columns: 1fr 1fr; gap: 10px; }
+}
+@media (max-width: 480px) {
+  .stats { grid-template-columns: 1fr; }
+  .dash__head { flex-direction: column; align-items: stretch; }
+  .dash__head .btn { width: 100%; justify-content: center; }
+}
+
+
