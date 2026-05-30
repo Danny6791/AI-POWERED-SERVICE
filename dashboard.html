@@ -144,3 +144,85 @@
           else { toast('Failed to cancel', 'error'); }
         };
 
+
+        document.querySelectorAll('.dash__nav a').forEach(a => {
+          a.addEventListener('click', function(e) {
+            e.preventDefault();
+            document.querySelectorAll('.dash__nav a').forEach(x => x.classList.remove('active'));
+            this.classList.add('active');
+            document.querySelectorAll('[id^="section-"]').forEach(s => s.style.display = 'none');
+            const section = document.getElementById('section-' + this.dataset.section);
+            if (section) section.style.display = 'block';
+            document.getElementById('dashSidebar').classList.remove('open');
+            document.getElementById('dashOverlay').classList.remove('open');
+          });
+        });
+
+        document.getElementById('dashToggle').addEventListener('click', function() {
+          document.getElementById('dashSidebar').classList.toggle('open');
+          document.getElementById('dashOverlay').classList.toggle('open');
+        });
+        document.getElementById('dashOverlay').addEventListener('click', function() {
+          this.classList.remove('open');
+          document.getElementById('dashSidebar').classList.remove('open');
+        });
+
+        function loadAccount() {
+          const user = SC.currentUser();
+          if (!user) return;
+          document.getElementById('accName').value = user.name || '';
+          document.getElementById('accEmail').value = user.email || '';
+          if (user.card) {
+            document.getElementById('cardNumber').textContent = '\u2022\u2022\u2022\u2022 \u2022\u2022\u2022\u2022 \u2022\u2022\u2022\u2022 ' + user.card.last4;
+            document.getElementById('cardBrand').textContent = user.card.brand || 'Visa';
+            document.getElementById('cardExp').textContent = user.card.exp || '12/27';
+            document.getElementById('cardName').textContent = user.name || 'Card Holder';
+          }
+        }
+
+        document.getElementById('saveProfileBtn').addEventListener('click', function() {
+          const name = document.getElementById('accName').value.trim();
+          if (!name) {
+            const el = document.getElementById('profileMsg');
+            el.textContent = 'Name is required'; el.className = 'form-msg error'; return;
+          }
+          const users = SC.getUsers();
+          const session = SC.getSession();
+          const idx = users.findIndex(u => u.id === session.userId);
+          if (idx > -1) {
+            users[idx].name = name;
+            SC.saveUsers(users);
+            const el = document.getElementById('profileMsg');
+            el.textContent = 'Profile updated!'; el.className = 'form-msg success';
+            document.querySelectorAll('.auth-name').forEach(el => el.textContent = name);
+            toast('Profile saved', 'success');
+          }
+        });
+
+        document.getElementById('saveCardBtn').addEventListener('click', function() {
+          const number = document.getElementById('cardNumberInput').value.replace(/\s/g, '');
+          const exp = document.getElementById('cardExpInput').value.trim();
+          const cvv = document.getElementById('cardCvvInput').value.trim();
+          const cardMsg = document.getElementById('cardMsg');
+          if (!number || number.length < 13) { cardMsg.textContent = 'Enter a valid card number'; cardMsg.className = 'form-msg error'; return; }
+          if (!exp || exp.length < 4) { cardMsg.textContent = 'Enter a valid expiry (MM/YY)'; cardMsg.className = 'form-msg error'; return; }
+          if (!cvv || cvv.length < 3) { cardMsg.textContent = 'Enter a valid CVV'; cardMsg.className = 'form-msg error'; return; }
+          const brand = number.startsWith('4') ? 'Visa' : number.startsWith('5') ? 'Mastercard' : 'Card';
+          const r = SC.saveCard({ brand, number, exp, cvv });
+          if (r.ok) {
+            cardMsg.textContent = 'Card saved successfully!'; cardMsg.className = 'form-msg success';
+            document.getElementById('cardNumber').textContent = '\u2022\u2022\u2022\u2022 \u2022\u2022\u2022\u2022 \u2022\u2022\u2022\u2022 ' + number.slice(-4);
+            document.getElementById('cardBrand').textContent = brand;
+            document.getElementById('cardExp').textContent = exp;
+            document.getElementById('cardName').textContent = (SC.currentUser() || {}).name || 'Card Holder';
+            toast('Payment method added', 'success');
+          } else { cardMsg.textContent = r.msg; cardMsg.className = 'form-msg error'; }
+        });
+
+        loadDashboard();
+        loadAccount();
+      })();
+  </script>
+</body>
+</html>
+
