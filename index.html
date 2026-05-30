@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="SERVICECRAFT — A beautiful marketplace for ordering professional services: web dev, software, apps, design, video & more." />
+  <title>SERVICECRAFT — Order Expert Services</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="css/styles.css" />
+  <link rel="stylesheet" href="css/components.css" />
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>⚡</text></svg>" />
+</head>
+<body>
+  <div class="bg-decor" aria-hidden="true">
+    <span class="blob blob--1"></span>
+    <span class="blob blob--2"></span>
+    <span class="blob blob--3"></span>
+  </div>
+
+  <header class="nav" id="top">
+    <div class="container nav__inner">
+      <a href="index.html" class="brand">
+        <span class="brand__logo">⚡</span>
+        <span class="brand__name">Service<span class="brand__accent">Craft</span></span>
+      </a>
+      <nav class="nav__links" id="navLinks" aria-label="Primary">
+        <a href="index.html#services">Services</a>
+        <a href="index.html#how">How it works</a>
+        <a href="login.html" class="auth-hide btn btn--ghost" style="display:inline-flex">Login</a>
+        <a href="dashboard.html" class="auth-show btn btn--ghost" style="display:none">Dashboard</a>
+        <a href="order.html" class="btn btn--primary">Order Now</a>
+      </nav>
+      <button class="nav__toggle" id="navToggle" aria-label="Toggle navigation" aria-expanded="false">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </header>
+
+  <main>
+    <section class="hero">
+      <div class="container hero__inner">
+        <div class="hero__copy reveal">
+          <span class="pill">✨ New · GPT-powered workflows</span>
+          <h1 class="hero__title">Turn ideas into action with <span class="grad-text">intelligent automation</span></h1>
+          <p class="hero__sub">Nexus AI helps teams draft, analyze, and ship faster. Connect your data, describe what you want, and let our agents do the heavy lifting.</p>
+          <div class="hero__cta">
+            <a href="#demo" class="btn btn--primary">Get started free</a>
+            <a href="#how" class="btn btn--outline">See how it works</a>
+          </div>
+          <div class="hero__stats">
+            <div><strong data-count="98">0</strong><span>% accuracy</span></div>
+            <div><strong data-count="12">0</strong><span>k+ teams</span></div>
+            <div><strong data-count="40">0</strong><span>+ integrations</span></div>
+          </div>
+        </div>
+        <div class="hero__visual reveal">
+          <div class="glass-card chat">
+            <div class="chat__head"><span class="dot"></span><span class="dot"></span><span class="dot"></span> Nexus Assistant</div>
+            <div class="chat__body" id="chatBody"></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="logos container reveal">
+      <p>Trusted by fast-moving teams worldwide</p>
+      <div class="logos__row">
+        <span>◆ Aperture</span><span>⬡ Lumen</span><span>✦ Vertex</span><span>⬢ Quanta</span><span>◈ Orbit</span>
+      </div>
+    </section>
+
+
+    <!-- Features -->
+    <section class="section" id="features">
+      <div class="container">
+        <div class="section__head reveal">
+          <span class="eyebrow">Features</span>
+          <h2>Everything you need to build with AI</h2>
+          <p>Powerful building blocks, ready out of the box.</p>
+        </div>
+        <div class="grid grid--3">
+          <article class="card reveal">
+            <div class="card__icon">⚡</div>
+            <h3>Lightning fast</h3>
+            <p>Stream responses in milliseconds with our optimized inference layer and global edge network.</p>
+          </article>
+          <article class="card reveal">
+            <div class="card__icon">🔒</div>
+            <h3>Private &amp; secure</h3>
+            <p>Your data is encrypted at rest and in transit. SOC 2 ready with full audit logging.</p>
+          </article>
+          <article class="card reveal">
+            <div class="card__icon">🧩</div>
+            <h3>40+ integrations</h3>
+            <p>Connect Slack, Notion, GitHub, and more in a couple of clicks — no code required.</p>
+          </article>
+          <article class="card reveal">
+            <div class="card__icon">📊</div>
+            <h3>Smart analytics</h3>
+            <p>Understand usage, quality, and cost with dashboards built for product teams.</p>
+          </article>
+          <article class="card reveal">
+            <div class="card__icon">🤖</div>
+            <h3>Autonomous agents</h3>
+            <p>Spin up agents that plan, act, and self-correct across multi-step workflows.</p>
+          </article>
+          <article class="card reveal">
+            <div class="card__icon">🌍</div>
+            <h3>Scales with you</h3>
+            <p>From a side project to enterprise scale — pay only for what you use.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- How it works -->
+    <section class="section section--alt" id="how">
+      <div class="container">
+        <div class="section__head reveal">
+          <span class="eyebrow">How it works</span>
+          <h2>Up and running in three steps</h2>
+        </div>
+        <div class="grid grid--3 steps">
+          <div class="step reveal"><span class="step__num">1</span><h3>Connect</h3><p>Link your tools and data sources securely in minutes.</p></div>
+          <div class="step reveal"><span class="step__num">2</span><h3>Describe</h3><p>Tell Nexus what you want in plain language.</p></div>
+          <div class="step reveal"><span class="step__num">3</span><h3>Automate</h3><p>Let agents execute, review, and deliver results.</p></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Pricing -->
+    <section class="section" id="pricing">
+      <div class="container">
+        <div class="section__head reveal">
+          <span class="eyebrow">Pricing</span>
+          <h2>Simple, transparent plans</h2>
+          <p>Start free. Upgrade when you're ready.</p>
+        </div>
+        <div class="grid grid--3">
+          <article class="price reveal">
+            <h3>Starter</h3>
+            <div class="price__amt">$0<span>/mo</span></div>
+            <ul><li>✓ 1 workspace</li><li>✓ 1,000 requests/mo</li><li>✓ Community support</li></ul>
+            <a href="#demo" class="btn btn--outline w-full">Choose Starter</a>
+          </article>
+          <article class="price price--featured reveal">
+            <span class="price__badge">Most popular</span>
+            <h3>Pro</h3>
+            <div class="price__amt">$29<span>/mo</span></div>
+            <ul><li>✓ Unlimited workspaces</li><li>✓ 100k requests/mo</li><li>✓ Priority support</li><li>✓ Advanced analytics</li></ul>
+            <a href="#demo" class="btn btn--primary w-full">Choose Pro</a>
+          </article>
+          <article class="price reveal">
+            <h3>Enterprise</h3>
+            <div class="price__amt">Custom</div>
+            <ul><li>✓ SSO &amp; SAML</li><li>✓ Dedicated infra</li><li>✓ SLA &amp; onboarding</li></ul>
+            <a href="#demo" class="btn btn--outline w-full">Contact sales</a>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- Testimonials -->
+    <section class="section section--alt" id="testimonials">
+      <div class="container">
+        <div class="section__head reveal">
+          <span class="eyebrow">Loved by builders</span>
+          <h2>What our customers say</h2>
+        </div>
+        <div class="grid grid--3">
+          <figure class="quote reveal"><blockquote>"Nexus cut our reporting time from days to minutes. It feels like magic."</blockquote><figcaption>— Maya R., Head of Ops</figcaption></figure>
+          <figure class="quote reveal"><blockquote>"The agents actually finish the job. Our team ships twice as fast now."</blockquote><figcaption>— Daniel K., Engineering Lead</figcaption></figure>
+          <figure class="quote reveal"><blockquote>"Setup took five minutes and the analytics are gorgeous."</blockquote><figcaption>— Priya S., Founder</figcaption></figure>
+        </div>
+      </div>
+    </section>
+
+    <!-- Demo / CTA -->
+    <section class="section cta" id="demo">
+      <div class="container">
+        <div class="glass-card cta__card reveal">
+          <h2>Try the live demo</h2>
+          <p>Type a request and watch Nexus respond.</p>
+          <form class="cta__form" id="demoForm">
+            <input type="text" id="demoInput" placeholder="e.g. Summarize this week's sales…" aria-label="Your request" required />
+            <button type="submit" class="btn btn--primary">Run ✨</button>
+          </form>
+          <div class="cta__output" id="demoOutput" aria-live="polite"></div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <div class="container footer__inner">
+      <div class="brand">
+        <span class="brand__logo">🧠</span>
+        <span class="brand__name">Nexus<span class="brand__accent">AI</span></span>
+      </div>
+      <p>© <span id="year"></span> Nexus AI. A demo website for testing purposes.</p>
+      <div class="footer__links">
+        <a href="#features">Features</a>
+        <a href="#pricing">Pricing</a>
+        <a href="#top">Back to top ↑</a>
+      </div>
+    </div>
+  </footer>
+
+  <script src="js/main.js"></script>
+</body>
+</html>
+
