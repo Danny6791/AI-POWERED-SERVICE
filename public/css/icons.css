@@ -1,0 +1,41 @@
+/* ===== SERVICECRAFT SVG Icon System ===== */
+/* Usage: <svg class="icon"><use href="/icons/icons.svg#ic-web"/></svg> */
+
+.icon {
+  width: 1.2em;
+  height: 1.2em;
+  vertical-align: middle;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.5;
+  display: inline-block;
+  flex-shrink: 0;
+  transition: color .2s ease;
+}
+.icon--sm { width: 1em; height: 1em; }
+.icon--md { width: 1.5em; height: 1.5em; }
+.icon--lg { width: 2em; height: 2em; }
+.icon--xl { width: 2.5em; height: 2.5em; }
+.icon--brand { color: var(--brand); }
+.icon--brand2 { color: var(--brand-2); }
+.icon--accent { color: var(--accent); }
+.icon--success { color: #57ff7e; }
+.icon--warning { color: #ffc107; }
+.icon--error { color: #ff6b6b; }
+.icon--muted { color: var(--muted); }
+
+/* Icon container for card icons */
+.icon-box {
+  width: 48px;
+  height: 48px;
+  display: grid;
+  place-items: center;
+  border-radius: 14px;
+  background: rgba(124, 92, 255, 0.12);
+  margin-bottom: 14px;
+}
+.icon-box .icon {
+  width: 1.4em;
+  height: 1.4em;
+  color: var(--brand-2);
+}
