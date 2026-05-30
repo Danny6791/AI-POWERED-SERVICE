@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" /><meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>SERVICECRAFT — Dashboard</title>
+  <meta name="description" content="Manage your SERVICECRAFT orders and account." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="css/styles.css" /><link rel="stylesheet" href="css/components.css" />
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>⚡</text></svg>" />
+</head>
+<body class="page-protected">
+  <div class="dash" id="dashApp">
+    <!-- Sidebar -->
+    <aside class="dash__sidebar" id="dashSidebar">
+      <div class="dash__brand">⚡ Service<span style="color:var(--brand-2)">Craft</span></div>
+      <nav class="dash__nav">
+        <a href="#" class="active" data-section="orders">📋 My Orders</a>
+        <a href="#" data-section="account">👤 Account</a>
+        <a href="order.html">➕ New Order</a>
+      </nav>
+      <div class="dash__sidebar-foot">
+        <a href="index.html" class="btn btn--ghost" style="width:100%;justify-content:center">← Home</a>
+        <a href="#" class="btn btn--outline btn-logout" style="width:100%;justify-content:center;margin-top:6px">🚪 Logout</a>
+      </div>
+    </aside>
+    <div class="dash__sidebar-overlay" id="dashOverlay"></div>
+
+    <!-- Main Content -->
+    <main class="dash__main">
+      <div class="top-bar">
+        <button class="dash-toggle" id="dashToggle">☰</button>
+        <div class="top-bar__user">
+          <span style="color:var(--muted)">Welcome,</span>
+          <strong class="auth-name">User</strong>
+        </div>
+      </div>
+
+      <!-- Orders Section -->
+      <div id="section-orders">
+        <div class="dash__head">
+          <div><h1>My Orders 📋</h1><p>Manage all your service orders in one place</p></div>
+          <a href="order.html" class="btn btn--primary">+ New Order</a>
+        </div>
+        <div class="stats" id="dashStats">
+          <div class="stat"><div class="stat__icon">📦</div><div class="stat__num" id="statTotal">0</div><div class="stat__label">Total Orders</div></div>
+          <div class="stat"><div class="stat__icon">⏳</div><div class="stat__num" id="statPending">0</div><div class="stat__label">Pending</div></div>
+          <div class="stat"><div class="stat__icon">🔄</div><div class="stat__num" id="statProgress">0</div><div class="stat__label">In Progress</div></div>
+          <div class="stat"><div class="stat__icon">✅</div><div class="stat__num" id="statDone">0</div><div class="stat__label">Completed</div></div>
+        </div>
+        <div class="orders-card">
+          <h3>Order History</h3>
+          <div id="ordersList"></div>
+        </div>
+      </div>
+
+      <!-- Account Section -->
+      <div id="section-account" style="display:none">
+        <div class="dash__head"><div><h1>Account 👤</h1><p>Manage your profile and payment methods</p></div></div>
+        <div class="order-layout">
+          <div class="glass-card" style="padding:28px">
+            <h3 style="margin-bottom:16px">Profile</h3>
+            <div class="form-group"><label>Name</label><input type="text" id="accName" placeholder="Your name" /></div>
+            <div class="form-group"><label>Email</label><input type="email" id="accEmail" placeholder="Your email" disabled style="opacity:.6" /></div>
+            <button class="btn btn--primary" id="saveProfileBtn">Save Changes</button>
+            <div id="profileMsg" class="form-msg"></div>
+          </div>
+          <div>
+            <div class="glass-card" style="padding:28px">
+              <h3 style="margin-bottom:16px">Payment Method</h3>
+              <div id="cardDisplay">
+                <div class="card-preview" id="cardPreview">
+                  <div class="card-preview__brand" id="cardBrand">Visa</div>
+                  <div class="card-preview__number" id="cardNumber">•••• •••• •••• ••••</div>
+                  <div class="card-preview__bottom">
+                    <span id="cardName">Card Holder</span>
+                    <span id="cardExp">MM/YY</span>
+                  </div>
+                </div>
+              </div>
+              <div id="cardForm">
+                <div class="form-group"><label>Card Number</label><input type="text" id="cardNumberInput" placeholder="4242 4242 4242 4242" maxlength="19" /></div>
+                <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
+                  <div class="form-group"><label>Expiry</label><input type="text" id="cardExpInput" placeholder="MM/YY" maxlength="5" /></div>
+                  <div class="form-group"><label>CVV</label><input type="text" id="cardCvvInput" placeholder="123" maxlength="4" /></div>
+                </div>
+                <button class="btn btn--primary w-full" id="saveCardBtn">Save Card</button>
+                <div id="cardMsg" class="form-msg"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+  <div class="toast-container" id="toastContainer"></div>
+  <script src="js/db.js"></script><script src="js/auth.js"></script><script src="js/app.js"></script>
+  <script>
